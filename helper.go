@@ -100,7 +100,7 @@ func (x *GoSNMP) decodeValue(data []byte, msg string) (*variable, error) {
 		}
 
 		retVal.Type = OctetString
-		retVal.Value = string(data[cursor:length])
+		retVal.Value = data[cursor:length]
 	case Null:
 		// 0x05
 		x.logPrint("decodeValue: type is Null")
@@ -642,7 +642,7 @@ func parseRawField(logger Logger, data []byte, msg string) (interface{}, int, er
 		if length > len(data) {
 			return nil, 0, fmt.Errorf("not enough data for OctetString (%d vs %d): %x", length, len(data), data)
 		}
-		return string(data[cursor:length]), length, nil
+		return data[cursor:length], length, nil
 	case ObjectIdentifier:
 		length, cursor := parseLength(data)
 		if length > len(data) {
